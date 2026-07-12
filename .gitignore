@@ -1,0 +1,11 @@
+.env
+config.yaml
+*.session
+*.session-journal
+news_parser.db
+news_parser.db-wal
+news_parser.db-shm
+__pycache__/
+*.pyc
+.venv/
+venv/
