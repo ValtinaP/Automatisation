@@ -1,0 +1,27 @@
+# Copy this file to config.yaml and edit.
+
+# Free-text instruction describing what you care about. Sent to the AI as
+# context for every message it evaluates. Be as specific as you like.
+instruction: |
+  Меня интересуют новости про ...
+
+# Channels/groups to monitor by @username or numeric id (as in Telegram).
+channels:
+  - "@example_channel"
+
+# Names of Telegram folders (as configured in your Telegram app) whose
+# chats should all be monitored. Resolved at startup via your account's
+# dialog filters.
+folders:
+  - "News"
+
+# Hashtags the AI can choose from for a matching post (exactly one per post).
+# Keep names self-explanatory; add a short marker in a comment only for tags
+# that turn out ambiguous in practice.
+hashtags:
+  - "#GR_Выборы"
+  - "#GR_Регулирование"
+  - "#GR_Санкции"
+
+# Seconds to wait between AI analysis calls, to keep request volume gentle.
+ai_rate_limit_seconds: 1.0
