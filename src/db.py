@@ -27,6 +27,7 @@ class Storage:
             CREATE TABLE IF NOT EXISTS matches (
                 chat_id INTEGER NOT NULL,
                 message_id INTEGER NOT NULL,
+                hashtag TEXT,
                 reasoning TEXT,
                 matched_at TEXT NOT NULL,
                 PRIMARY KEY (chat_id, message_id),
@@ -49,20 +50,20 @@ class Storage:
         )
         self._conn.commit()
 
-    def save_match(self, chat_id: int, message_id: int, reasoning: str):
+    def save_match(self, chat_id: int, message_id: int, hashtag: str, reasoning: str):
         self._conn.execute(
             """
-            INSERT OR IGNORE INTO matches (chat_id, message_id, reasoning, matched_at)
-            VALUES (?, ?, ?, ?)
+            INSERT OR IGNORE INTO matches (chat_id, message_id, hashtag, reasoning, matched_at)
+            VALUES (?, ?, ?, ?, ?)
             """,
-            (chat_id, message_id, reasoning, datetime.now(timezone.utc).isoformat()),
+            (chat_id, message_id, hashtag, reasoning, datetime.now(timezone.utc).isoformat()),
         )
         self._conn.commit()
 
     def matches_in_range(self, start: datetime, end: datetime):
         cur = self._conn.execute(
             """
-            SELECT m.chat_title, m.posted_at, m.text, m.link, x.reasoning
+            SELECT m.chat_title, m.posted_at, m.text, m.link, x.hashtag, x.reasoning
             FROM matches x
             JOIN messages m ON m.chat_id = x.chat_id AND m.message_id = x.message_id
             WHERE m.posted_at BETWEEN ? AND ?

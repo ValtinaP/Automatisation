@@ -15,5 +15,13 @@ channels:
 folders:
   - "News"
 
+# Hashtags the AI can choose from for a matching post (exactly one per post).
+# Keep names self-explanatory; add a short marker in a comment only for tags
+# that turn out ambiguous in practice.
+hashtags:
+  - "#GR_Выборы"
+  - "#GR_Регулирование"
+  - "#GR_Санкции"
+
 # Seconds to wait between AI analysis calls, to keep request volume gentle.
 ai_rate_limit_seconds: 1.0

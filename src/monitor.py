@@ -2,7 +2,7 @@ import asyncio
 
 from telethon import events, functions
 
-from .notifier import format_match, send_with_retry
+from .notifier import format_post, send_with_retry, split_title_body
 
 
 def build_link(chat, message_id: int) -> str:
@@ -86,10 +86,11 @@ class Monitor:
 
         self.storage.save_message(event.chat_id, message.id, chat_title, message.date, text, link)
 
-        result = await self.ai_filter.evaluate(self.config.instruction, text)
+        result = await self.ai_filter.evaluate(self.config.instruction, self.config.hashtags, text)
         if not result["match"]:
             return
 
-        self.storage.save_match(event.chat_id, message.id, result["reasoning"])
-        notification = format_match(chat_title, link, text, result["reasoning"])
+        self.storage.save_match(event.chat_id, message.id, result["hashtag"], result["reasoning"])
+        title, body = split_title_body(text)
+        notification = format_post(result["hashtag"], title, body, message.date, link)
         await send_with_retry(self.client, self._notify_entity, notification)

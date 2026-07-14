@@ -16,6 +16,7 @@ class Config:
     instruction: str
     channels: list = field(default_factory=list)
     folders: list = field(default_factory=list)
+    hashtags: list = field(default_factory=list)
     ai_rate_limit_seconds: float = 1.0
 
 
@@ -43,5 +44,6 @@ def load_config(env_path: str = ".env", yaml_path: str = "config.yaml") -> Confi
         instruction=yaml_cfg["instruction"].strip(),
         channels=yaml_cfg.get("channels") or [],
         folders=yaml_cfg.get("folders") or [],
+        hashtags=yaml_cfg.get("hashtags") or [],
         ai_rate_limit_seconds=float(yaml_cfg.get("ai_rate_limit_seconds", 1.0)),
     )

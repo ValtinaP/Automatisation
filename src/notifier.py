@@ -12,13 +12,21 @@ async def send_with_retry(client, entity, text: str):
             await asyncio.sleep(e.seconds + 1)
 
 
-def format_match(chat_title: str, link: str, text: str, reasoning: str) -> str:
-    snippet = text.strip()
-    if len(snippet) > 500:
-        snippet = snippet[:500] + "..."
-    return (
-        f"🔔 Совпадение: {chat_title}\n"
-        f"{link}\n\n"
-        f"{snippet}\n\n"
-        f"AI: {reasoning}"
-    )
+def split_title_body(text: str) -> tuple[str, str]:
+    stripped = text.strip()
+    if "\n" in stripped:
+        title, rest = stripped.split("\n", 1)
+        return title.strip(), rest.strip()
+    return stripped, ""
+
+
+def format_post(hashtag: str, title: str, body: str, posted_at, link: str) -> str:
+    parts = []
+    if hashtag:
+        parts.append(hashtag)
+    parts.append(title)
+    if body:
+        parts.append(body)
+    parts.append(f"📅 {posted_at.strftime('%d.%m.%Y, %H:%M')}")
+    parts.append(f"🔗 {link}")
+    return "\n\n".join(parts)
